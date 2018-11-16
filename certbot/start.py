@@ -1,11 +1,16 @@
+import socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('', 10000)
+sock.bind(server_address)
+sock.listen(1)
+sock.accept()
+
 from subprocess import call
 from subprocess import check_output
 from glob import glob
 import os
 from datetime import datetime, timedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
-import socket
-
 
 def get_domains():
     for e in glob("/servers/*/domains.txt"):
@@ -34,12 +39,6 @@ def get_updater(domain):
         print "renuing for domain:", domain
         call(["./update_cert.sh",domain])
     return result
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('', 10000)
-sock.bind(server_address)
-sock.listen(1)
-sock.accept()
 
 for dom, exp in get_live_domain_and_exparation_date():
     if dom in domains:
