@@ -5,6 +5,10 @@ import os
 from datetime import datetime, timedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+
+running_file = "/var/www/certbot.running"
+os.mknod(running_file)
+
 def get_domains():
     for e in glob("/servers/*/domains.txt"):
         with open(e) as f:
@@ -47,4 +51,5 @@ for dom, exp in get_live_domain_and_exparation_date():
 for dom in domains:
     sched.add_job(get_updater(dom),'interval', days=60, next_run_time=datetime.now())
 
+os.remove(running_file)
 sched.start()
