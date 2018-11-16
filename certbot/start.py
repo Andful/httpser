@@ -8,6 +8,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 running_file = "/var/www/certbot.running"
 open(running_file, 'a').close()
+print "created file"
 
 def get_domains():
     for e in glob("/servers/*/domains.txt"):
