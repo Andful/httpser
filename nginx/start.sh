@@ -5,8 +5,9 @@ sleep 1
 while [ -f /var/www/certbot.running ]
 do
   echo "file still there"
-  sleep 2
+  sleep 1
 done
 echo "file removed"
 kill $TASK_PID
+sleep 3
 nginx -g "daemon off;"
