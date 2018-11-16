@@ -1,9 +1,6 @@
 #!/bin/sh
 nginx -c /app/nginx.conf -g "daemon off;"&
 TASK_PID=$!
-sleep 2
-echo "connection started"
-while ! nc -z certbot 10000; do sleep 3; done
-echo "connection ended"
-sleep 3
+sleep 20
+kill $TASK_PID
 nginx -g "daemon off;"
