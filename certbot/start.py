@@ -53,5 +53,6 @@ for dom, exp in get_live_domain_and_exparation_date():
 for dom in domains:
     sched.add_job(get_updater(dom),'interval', days=60, next_run_time=datetime.now())
 
+print "file removed"
 os.remove(running_file)
 sched.start()
