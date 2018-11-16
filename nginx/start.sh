@@ -1,7 +1,7 @@
 #!/bin/sh
 nginx -c /app/nginx.conf -g "daemon off;"&
 TASK_PID=$!
-echo TASK_PID
+echo $TASK_PID
 sleep 1
 ls -l /var/www/certbot.running
 while [-f /var/www/certbot.running ]
@@ -11,5 +11,5 @@ do
 done
 ls -l /var/www/certbot.running
 echo "file should be removed"
-kill TASK_PID
+kill $TASK_PID
 nginx -g "daemon off;"
