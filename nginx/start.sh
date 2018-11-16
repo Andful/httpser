@@ -1,5 +1,6 @@
 #!/bin/sh
 nginx -c /app/nginx.conf -g "daemon off;"&
+echo $!
 export TASK_PID=$!
 echo $TASK_PID
 sleep 1
