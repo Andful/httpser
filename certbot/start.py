@@ -4,12 +4,8 @@ from glob import glob
 import os
 from datetime import datetime, timedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
+import socket
 
-
-running_file = "/var/www/certbot.running"
-open(running_file, 'a').close()
-print "is file: ", os.path.isfile(running_file)
-print "created file"
 
 def get_domains():
     for e in glob("/servers/*/domains.txt"):
@@ -39,6 +35,12 @@ def get_updater(domain):
         call(["./update_cert.sh",domain])
     return result
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('', 10000)
+sock.bind(server_address)
+sock.listen(1)
+sock.accept()
+
 for dom, exp in get_live_domain_and_exparation_date():
     if dom in domains:
         domains.remove(dom)
@@ -53,6 +55,5 @@ for dom, exp in get_live_domain_and_exparation_date():
 for dom in domains:
     sched.add_job(get_updater(dom),'interval', days=60, next_run_time=datetime.now())
 
-print "file removed"
-os.remove(running_file)
+sock.close()
 sched.start()

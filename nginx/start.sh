@@ -1,4 +1,4 @@
-#!/bin/sh
+!/bin/sh
 nginx -c /app/nginx.conf -g "daemon off;"&
 TASK_PID=$!
 sleep 3
@@ -11,3 +11,5 @@ echo "file removed"
 kill $TASK_PID
 sleep 3
 nginx -g "daemon off;"
+
+sudo rm /var/www/certbot.running
