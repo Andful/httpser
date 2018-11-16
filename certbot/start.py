@@ -48,7 +48,7 @@ for dom, exp in get_live_domain_and_exparation_date():
 
 for dom in domains:
     to_run = get_updater(dom)
-    sched.add_job(get_updater(dom),'interval', days=60, next_run_time=datetime.now())
+    sched.add_job(to_run,'interval', days=60)
     to_run()
 
 sched.start()
