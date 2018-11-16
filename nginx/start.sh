@@ -1,7 +1,7 @@
 #!/bin/sh
 nginx -c /app/nginx.conf -g "daemon off;"&
 TASK_PID=$!
-sleep 1
+sleep 3
 while [ -f /var/www/certbot.running ]
 do
   echo "file still there"
