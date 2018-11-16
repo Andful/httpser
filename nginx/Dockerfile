@@ -1,5 +1,4 @@
 FROM nginx
-COPY .:/app
+COPY . /app
 WORKDIR /app
-RUN apt-get update \
-&& apt-get install python
+CMD start.sh
