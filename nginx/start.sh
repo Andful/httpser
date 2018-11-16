@@ -1,6 +1,7 @@
 #!/bin/sh
 nginx -c /app/nginx.conf -g "daemon off;"&
 TASK_PID=$!
+sleep 1
 while [-f /var/www/certbot.running ]
 do
   sleep 2
