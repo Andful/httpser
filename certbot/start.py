@@ -41,10 +41,14 @@ for dom, exp in get_live_domain_and_exparation_date():
             print "scheduling for domain:", dom, "\trenew due:", date_to_renew
             sched.add_job(get_updater(dom),'interval', days=60, next_run_time=date_to_renew)
         else:
-            sched.add_job(get_updater(dom),'interval', days=60, next_run_time=datetime.now())
+            to_run = get_updater(dom)
+            sched.add_job(to_run,'interval', days=60)
+            to_run()
 
 
 for dom in domains:
+    to_run = get_updater(dom)
     sched.add_job(get_updater(dom),'interval', days=60, next_run_time=datetime.now())
+    to_run()
 
 sched.start()
