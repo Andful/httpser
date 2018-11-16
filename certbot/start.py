@@ -1,11 +1,3 @@
-import socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('', 10000)
-sock.bind(server_address)
-sock.listen(1)
-c,_ = sock.accept()
-print "socket oppened"
-
 from subprocess import call
 from subprocess import check_output
 from glob import glob
@@ -55,6 +47,13 @@ for dom, exp in get_live_domain_and_exparation_date():
 for dom in domains:
     sched.add_job(get_updater(dom),'interval', days=60, next_run_time=datetime.now())
 
-print "socket closed"
+import socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('', 10000)
+sock.bind(server_address)
+sock.listen(1)
+c,_ = sock.accept()
+print "socket oppened"
 c.close()
+print "socket closed"
 sched.start()
