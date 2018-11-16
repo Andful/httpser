@@ -7,7 +7,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 running_file = "/var/www/certbot.running"
-os.mknod(running_file)
+open(running_file, 'a').close()
 
 def get_domains():
     for e in glob("/servers/*/domains.txt"):
