@@ -6,11 +6,8 @@ from datetime import datetime, timedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 def get_domains():
-    for e in glob("/servers/*/domains.txt"):
-        with open(e) as f:
-            lines = f.readlines()
-            for l in lines:
-                yield l
+    for e in glob("/servers/conf/*.conf"):
+        yield e[:-len(".conf")]
 
 def get_live_domain_and_exparation_date():
     certificates = glob("/etc/letsencrypt/live/*/cert.pem")
