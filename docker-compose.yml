@@ -12,6 +12,7 @@ services:
       - /var/www/:/var/www/
       - ${HOME}/.httpser/conf:/etc/nginx/conf.d/
       - ${HOME}/.httpser/servers:/servers/
+      - /var/log/nginx/:/var/log/nginx/
   certbot:
     build:
       context: ./certbot
