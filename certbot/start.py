@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 def get_domains():
-    for e in glob("/servers/conf/*.conf"):
-        yield e[:-len(".conf")]
+    for e in glob("/servers/*"):
+        yield os.path.basename(e)
 
 def get_live_domain_and_exparation_date():
     certificates = glob("/etc/letsencrypt/live/*/cert.pem")
@@ -41,11 +41,5 @@ for dom, exp in get_live_domain_and_exparation_date():
             to_run = get_updater(dom)
             sched.add_job(to_run,'interval', days=60)
             to_run()
-
-
-for dom in domains:
-    to_run = get_updater(dom)
-    sched.add_job(to_run,'interval', days=60)
-    to_run()
 
 sched.start()
