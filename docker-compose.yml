@@ -1,6 +1,5 @@
 version: '3'
 services:
-<<<<<<< Updated upstream
   nginx:
     build:
       context: ./nginx
