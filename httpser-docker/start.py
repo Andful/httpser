@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from subprocess import call
 from subprocess import check_output
 from glob import glob
@@ -26,7 +28,7 @@ now = datetime.utcnow()
 
 def get_updater(domain):
     def result():
-        print "renuing for domain:", domain
+        print("renuing for domain:", domain)
         call(["./update_cert.sh",domain])
     return result
 
