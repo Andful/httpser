@@ -91,15 +91,24 @@ def list():
 def clear():
     response = input("Are you sure you want to clear the domains? (y/N)")
     if response.lower() == 'y' or response.lower() == 'yes':
+        print("removing domains...")
         for domain_dir in glob(os.path.join(servers,"*")):
+            print("removing %s" % os.path.basename(domain_dir))
             shutil.rmtree(domains_dir)
+    else:
+        print("operation aborted")
 
 def install():
     pass
 
 def uninstall():
-    shutil.rmtree(httpser_home)
-    os.remove()
+    response = input("Are you sure you want to uninstall %s? (y/N)" % sys.argv[0])
+    if response.lower() == 'y' or response.lower() == 'yes':
+        shutil.rmtree(httpser_home)
+        os.remove(os.path.abspath(__file__))
+        print("uninstall successfull")
+    else:
+        print("operation aborted")
 
 def help():
     print("Help TODO")
