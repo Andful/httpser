@@ -1,23 +1,13 @@
 version: '3'
 services:
-  nginx:
+  httpser:
     build:
-      context: ./nginx
+      context: ./
     ports:
       - "443:443"
       - "80:80"
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
-      - /var/www/:/var/www/
-      - ${HOME}/.httpser/conf:/etc/nginx/conf.d/
-      - ${HOME}/.httpser/servers:/servers/
+      - ${HOME}/.httpser/:/httpser
       - /var/log/nginx/:/var/log/nginx/
-  certbot:
-    build:
-      context: ./certbot
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /var/lib/letsencrypt:/var/lib/letsencrypt
-      - /var/www/:/var/www/
-      - ${HOME}/.httpser/servers:/servers/

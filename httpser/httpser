@@ -7,9 +7,11 @@ from glob import glob
 from urllib import request
 
 httpser_home = os.path.join(os.environ['HOME'],".httpser")
-http_template_file = os.path.join(httpser_home, "http.conf")
-https_template_file = os.path.join(httpser_home, "https.conf")
 servers = os.path.join(httpser_home,"servers")
+actives = os.path.join(httpser_home,"actives")
+templates = os.path.join(httpser_home,"templates")
+https_template_file = os.path.join(templates, "https.conf")
+http_template_file = os.path.join(templates, "http.conf")
 
 def init():
     if not os.path.exists(httpser_home):
@@ -18,35 +20,50 @@ def init():
     if not os.path.exists(servers):
         os.mkdir(servers)
 
-    if not os.path.exists(template_file):
-        with request.urlopen("https://raw.githubusercontent.com/Andful/httpser/master/res/template.conf") as r:
-            with open(template_file, "w") as config:
+    if not os.path.exists(actives):
+        os.mkdir(actives)
+
+    if not os.path.exists(templates):
+        os.mkdir(templates)
+
+    if not os.path.exists(https_template_file):
+        with request.urlopen("https://raw.githubusercontent.com/Andful/httpser/unified/httpser/res/https.conf") as r:
+            with open(https_template_file, "w") as config:
                 config.write(r.read().decode("utf-8"))
-    if not os.path.exists(template_file):
-        with request.urlopen("https://raw.githubusercontent.com/Andful/httpser/master/res/template.conf") as r:
-            with open(template_file, "w") as config:
+    if not os.path.exists(http_template_file):
+        with request.urlopen("https://raw.githubusercontent.com/Andful/httpser/unified/httpser/res/http.conf") as r:
+            with open(http_template_file, "w") as config:
                 config.write(r.read().decode("utf-8"))
 def add():
     if len(sys.argv) < 3:
-        print("USAGE: %s %s [DOMAIN]" % (sys.argv[0], sys.argv[1]))
+        print("USAGE: %s %s DOMAIN [FILE1, FILE2, FILE3...]" % (sys.argv[0], sys.argv[1]))
         return
 
     domain = sys.argv[2]
     domain_dir = os.path.join(servers, domain)
     if os.path.exists(domain_dir):
-        print("domain already existing")
-        return
+        shutil.rmtree(domain_dir)
 
     os.mkdir(domain_dir)
 
-    with open(template_file) as template:
-        template_string = template.read()
+    with open(http_template_file) as http_template:
+        http_template_string = http_template.read()
 
-    template_string = template_string.replace("{{.Domain}}",domain)
-    template_string = template_string.replace("{{.ServersDir}}","/servers")
+    http_template_string = http_template_string.replace("{{.Domain}}",domain)
+    http_template_string = http_template_string.replace("{{.ServersDir}}","/httpser/servers")
 
-    with open(os.path.join(domain_dir,domain+".conf"), "w") as domain_conf:
-        domain_conf.write(template_string)
+    with open(os.path.join(domain_dir,"http."+domain+".conf"), "w") as http_domain_conf:
+        http_domain_conf.write(http_template_string)
+
+
+    with open(https_template_file) as https_template:
+        https_template_string = https_template.read()
+
+    https_template_string = https_template_string.replace("{{.Domain}}",domain)
+    https_template_string = https_template_string.replace("{{.ServersDir}}","/httpser/servers")
+
+    with open(os.path.join(domain_dir,"https."+domain+".conf"), "w") as https_domain_conf:
+        https_domain_conf.write(https_template_string)
 
     include_dir = os.path.join(domain_dir,"include")
 
@@ -72,7 +89,18 @@ def list():
         print(os.path.basename(e))
 
 def clear():
+    response = input("Are you sure you want to clear the domains? (y/N)")
+    if response.lower() == 'y' or response.lower() == 'yes':
+        for domain_dir in glob(os.path.join(servers,"*")):
+            shutil.rmtree(domains_dir)
+
+def install():
     pass
+
+def uninstall():
+    shutil.rmtree(httpser_home)
+    os.remove()
+
 def help():
     print("Help TODO")
 
@@ -87,6 +115,10 @@ if __name__=='__main__':
             list()
         elif sys.argv[1] == "clear":
             clear()
+        elif sys.argv[1] == "install":
+            install()
+        elif sys.argv[1] == "uninstall":
+            uninstall()
         elif sys.argv[1] == "help":
             help()
         else:
