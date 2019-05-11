@@ -1,0 +1,36 @@
+_httpser()
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="add remove list clear install uninstall help"
+
+    case $prev in
+     add)
+          ;;
+     clear)
+          COMPREPLY=( $(compgen -W "" -- ${cur}) )
+          ;;
+     help|-h|--help)
+          COMPREPLY=( $(compgen -W "" -- ${cur}) )
+          ;;
+     install)
+          COMPREPLY=( $(compgen -W "" -- ${cur}) )
+          ;;
+     list)
+          COMPREPLY=( $(compgen -W "" -- ${cur}) )
+          ;;
+     remove|rm)
+          COMPREPLY=( $(compgen -W `httpser list` -- ${cur}) )
+          ;;
+     uninstall)
+          COMPREPLY=( $(compgen -W "" -- ${cur}) )
+          ;;
+     httpser)
+          COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+          ;;
+    esac
+    return 0
+}
+complete -F _httpser httpser

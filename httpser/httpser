@@ -84,12 +84,11 @@ def remove():
     pass
 
 def list():
-    domains = glob(os.path.join(servers,"*"))
-    for e in domains:
-        print(os.path.basename(e))
+    domains = [os.path.basename(e) for e in glob(os.path.join(servers,"*"))]
+    print(" ".join(domains))
 
 def clear():
-    response = input("Are you sure you want to clear the domains? (y/N)")
+    response = input("Are you sure you want to clear the domains? (y/N):")
     if response.lower() == 'y' or response.lower() == 'yes':
         print("removing domains...")
         for domain_dir in glob(os.path.join(servers,"*")):
@@ -128,7 +127,7 @@ if __name__=='__main__':
             install()
         elif sys.argv[1] == "uninstall":
             uninstall()
-        elif sys.argv[1] == "help":
+        elif sys.argv[1] == "help" or sys.argv[1] == "-h" or sys.argv[1] == "--help":
             help()
         else:
             help()
